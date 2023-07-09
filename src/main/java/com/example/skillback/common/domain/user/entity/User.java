@@ -4,6 +4,8 @@ import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +20,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -28,21 +29,32 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "user_identifier")
     private String userIdentifier;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "activated")
+    @Enumerated(EnumType.STRING)
     private ActiveEnum activeEnum;
 
+    @Column(name = "roll_enum")
+    @Enumerated(EnumType.STRING)
     private RollEnum rollEnum;
 
+    @Column(name = "recent_time")
     private LocalDateTime recentLogin;
+
 
 
 }

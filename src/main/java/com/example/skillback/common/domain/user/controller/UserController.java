@@ -1,6 +1,8 @@
 package com.example.skillback.common.domain.user.controller;
 
 import static com.example.skillback.common.domain.user.controller.UserController.USER_API_URI;
+import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_CREATED;
+import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
 import com.example.skillback.common.domain.user.dto.DeleteUser;
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
@@ -8,7 +10,12 @@ import com.example.skillback.common.domain.user.dto.FindPassword;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.service.UserService;
+import com.example.skillback.common.dtos.StatusResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,18 +32,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public void signup(@RequestBody UserSignupRequest signupRequest) {
-        System.out.printf(signupRequest.getUserName());
-        System.out.println(signupRequest.getCheckPassword());
-        System.out.println(signupRequest.getPassword());
-        System.out.println(signupRequest.getEmail());
-        System.out.println(signupRequest.getCheckPassword());
+    public ResponseEntity<StatusResponse> signup(@RequestBody UserSignupRequest signupRequest) {
+        userService.signup(signupRequest);
+        return RESPONSE_CREATED;
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest.getUserIdentifier());
-        System.out.println(loginRequest.getPassword());
+    public ResponseEntity<StatusResponse> login(@RequestBody LoginRequest loginRequest,
+        HttpServletResponse response) {
+        userService.login(loginRequest, response);
+        return RESPONSE_OK;
     }
 
     @PostMapping("/logout")
