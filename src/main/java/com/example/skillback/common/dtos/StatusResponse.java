@@ -12,7 +12,7 @@ public class StatusResponse {
     private String message;
 
     public static StatusResponse valueOf(ResponseMessages responseMessages) {
-        return new StatusResponse(responseMessages.getStatusCode(), responseMessages.getMessages);
+        return new StatusResponse(responseMessages.getStatusCode(), responseMessages.getMessage());
     }
 
 }

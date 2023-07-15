@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     public static final String USER_API_URI = "/member1";
-//    private final UserService userService;
+    private final UserService userService;
 
     @PostMapping("/join")
     public ResponseEntity<StatusResponse> signup(@RequestBody UserSignupRequest signupRequest) {
