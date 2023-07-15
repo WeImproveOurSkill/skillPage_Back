@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
 
     public static final String ANSWER_API_URI = "/answer";
-    private final AnswerService answerService;
+//    private final AnswerService answerService;
 
     @PostMapping("/ca")
     public void createAnswer(@RequestBody AnswerRequire answerRequire) {

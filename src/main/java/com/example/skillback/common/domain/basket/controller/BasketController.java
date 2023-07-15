@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BasketController {
 
     public static final String BASKET_API_URI = "/basket";
-    private final BasketService basketService;
+//    private final BasketService basketService;
 
     @PostMapping("/product/{productId}")
     public void createBasket(@PathVariable Long productId,

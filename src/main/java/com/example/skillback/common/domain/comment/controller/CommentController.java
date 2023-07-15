@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
     public static final String COMMENT_API_URI = "/commnet";
-    private final CommentService commentService;
+//    private final CommentService commentService;
 
     @PostMapping("/cc/board/{boardId}")
     public void createComment(@PathVariable Long boardId,

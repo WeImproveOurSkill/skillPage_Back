@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     public static final String PRODUCT_API_URI = "/products";
-    private final ProductService productService;
+//    private final ProductService productService;
 
     @PostMapping
     public void createProduct(@RequestBody ProductRequest productRequest) {

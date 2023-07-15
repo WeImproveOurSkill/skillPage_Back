@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
 
     public static final String Question_API_URI = "/question";
-    private final QuestionService questionService;
+//    private final QuestionService questionService;
 
     @PostMapping("/cq/product/{productId}")
     public void createQuestion(@PathVariable Long productId,

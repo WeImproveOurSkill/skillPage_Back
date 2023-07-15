@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
 
     public static final String BOARD_API_URI = "/board";
-    private final BoardService boardService;
+//    private final BoardService boardService;
 
     @PostMapping("/cb")
     public void createBoard(@RequestBody BoardRequest boardRequest) {

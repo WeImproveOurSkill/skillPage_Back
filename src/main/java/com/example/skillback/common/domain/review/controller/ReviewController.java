@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     public static final String REVIEW_API_URI = "/review";
-    private final ReviewService reviewService;
+//    private final ReviewService reviewService;
 
     @PostMapping("/product/{productId}")
     public void createReview(@PathVariable Long productId,
