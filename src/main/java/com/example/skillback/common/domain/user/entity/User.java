@@ -1,7 +1,14 @@
 package com.example.skillback.common.domain.user.entity;
 
+import com.example.skillback.common.domain.board.entity.Board;
+import com.example.skillback.common.domain.comment.entity.Comment;
+import com.example.skillback.common.domain.file.entity.FileForm;
+import com.example.skillback.common.domain.product.entity.Product;
+import com.example.skillback.common.domain.question.entity.Question;
+import com.example.skillback.common.domain.review.entity.Review;
 import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,8 +16,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,6 +67,23 @@ public class User {
     @Column(name = "recent_time")
     private LocalDateTime recentLogin;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> sellProduct = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<Question> questions = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "users")
+    private List<Review> reviewList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FileForm> fileFormList = new ArrayList<>();
 }
