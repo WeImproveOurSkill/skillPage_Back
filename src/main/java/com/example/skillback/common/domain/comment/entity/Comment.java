@@ -30,6 +30,7 @@ public class Comment extends TimeStamped {
     private Long id;
 
     @Column(name = "comment_like")
+    @Builder.Default
     private Long commentLike = 0L;
 
     @Column(name = "comment_content")

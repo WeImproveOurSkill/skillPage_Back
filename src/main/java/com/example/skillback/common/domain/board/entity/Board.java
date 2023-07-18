@@ -1,6 +1,7 @@
 package com.example.skillback.common.domain.board.entity;
 
 import com.example.skillback.common.TimeStamped;
+import com.example.skillback.common.domain.category.entity.Category;
 import com.example.skillback.common.domain.comment.entity.Comment;
 import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.enums.BoardCategotyEnum;
@@ -39,7 +40,8 @@ public class Board extends TimeStamped {
     private Long id;
 
     @Column(name = "board_like")
-    private Long boardLike =  0L;
+    @Builder.Default
+    private Long boardLike = 0L;
 
     @Column(name = "board_content")
     private String content;
@@ -53,8 +55,12 @@ public class Board extends TimeStamped {
     private User user;
 
 
-    @OneToMany(mappedBy = "boards", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

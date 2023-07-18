@@ -68,22 +68,27 @@ public class User {
     private LocalDateTime recentLogin;
 
     @Builder.Default
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> sellProduct = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "users")
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
     private List<Question> questions = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "users")
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileForm> fileFormList = new ArrayList<>();
 }

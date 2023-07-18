@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 
 @Entity
-@Table
+@Table(name = "file_form")
 public class FileForm extends TimeStamped {
 
     @Id
