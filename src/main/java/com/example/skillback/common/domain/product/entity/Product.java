@@ -1,6 +1,7 @@
 package com.example.skillback.common.domain.product.entity;
 
 import com.example.skillback.common.TimeStamped;
+import com.example.skillback.common.domain.category.entity.Category;
 import com.example.skillback.common.domain.question.entity.Question;
 import com.example.skillback.common.domain.review.entity.Review;
 import com.example.skillback.common.domain.user.entity.User;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.springframework.cache.annotation.CacheConfig;
 
 @NoArgsConstructor
@@ -50,6 +52,7 @@ public class Product extends TimeStamped {
     @Column(name = "product_price")
     private Long productPrice;
 
+    @Builder.Default
     @Column(name = "view_cnt")
     private Long viewCnt = 0L;
 
@@ -61,9 +64,15 @@ public class Product extends TimeStamped {
     @JoinColumn(name = "seller_id")
     private User user;
 
-    @OneToMany(mappedBy = "products", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Builder.Default
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "products")
+    @Builder.Default
+    @OneToMany(mappedBy = "product")
     private List<Review> reviewList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_type")
+    private Category category;
 }

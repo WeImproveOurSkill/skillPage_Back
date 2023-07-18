@@ -33,6 +33,7 @@ public class Question extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Builder.Default
     @Column(name = "view_open")
     private Boolean view_open = true;
 
@@ -50,8 +51,9 @@ public class Question extends TimeStamped {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne(mappedBy = "questions")
+    @OneToOne(mappedBy = "question")
     private Answer answer;
+
 
 
 }

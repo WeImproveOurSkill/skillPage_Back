@@ -13,18 +13,19 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Time;
 import java.sql.Timestamp;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Builder
 
 @Entity
-@Table
+@Table(name = "answers")
 public class Answer extends TimeStamped {
 
     @Id
