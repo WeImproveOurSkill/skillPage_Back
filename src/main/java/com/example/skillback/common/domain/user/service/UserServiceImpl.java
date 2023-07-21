@@ -6,7 +6,9 @@ import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.domain.user.repository.UserRepository;
 import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
+import com.example.skillback.common.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
     @Override
+    @Transactional
     public void signup(UserSignupRequest userSignupRequest) {
         String userName = userSignupRequest.getUserName();
         String userIdentifier = userSignupRequest.getUserIdentifier();
-        String password = userSignupRequest.getPassword();
+        String password = passwordEncoder.encode(userSignupRequest.getPassword());
         String phoneNumber = userSignupRequest.getPhoneNumber();
         String email = userSignupRequest.getEmail();
 
@@ -40,20 +45,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
-        if (userRepository.existsByUserIdentifier(loginRequest.getUserIdentifier())) {
-            User user = userRepository.findByUserIdentifier(
-                loginRequest.getUserIdentifier());
-            if (checkUser(loginRequest, user)) {
-                response.getHeader("로그인 성공");
-            }
-        }else{
-            response.getHeader("로그인 실패");
+        String userIdentifier = loginRequest.getUserIdentifier();
+        String password = passwordEncoder.encode(loginRequest.getPassword());
+        User user = userRepository.findByUserIdentifier(userIdentifier);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
         }
-//        response.getHeader()
+        String accessToken = jwtUtil.createAccessToken(user.getUserIdentifier(),
+            user.getRollEnum());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+
+
     }
 
-    private static boolean checkUser(LoginRequest loginRequest, User user) {
-        return user.getPassword().equals(loginRequest.getPassword());
-    }
 }

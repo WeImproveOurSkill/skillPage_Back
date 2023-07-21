@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String ACCESS_HEADER = "ACCESS";
+//    public static final String ACCESS_HEADER = "ACCESS";
     //    public static final String REFRESH_HEADER = "REFRESH";
 
     public static final String AUTHORIZATION_KEY = "auth";
