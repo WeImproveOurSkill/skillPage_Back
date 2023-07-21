@@ -8,6 +8,7 @@ import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void signup(UserSignupRequest userSignupRequest) {
         String userName = userSignupRequest.getUserName();
