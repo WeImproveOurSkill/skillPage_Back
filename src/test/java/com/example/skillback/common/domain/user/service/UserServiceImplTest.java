@@ -15,6 +15,7 @@ import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.domain.user.repository.UserRepository;
 import com.example.skillback.common.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,8 @@ class UserServiceImplTest {
     @DisplayName("로그인 성공")
     void login_Success() {
         MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-        given(userRepository.findByUserIdentifier(USER1.getUserIdentifier())).willReturn(USER1);
+        given(userRepository.findByUserIdentifier(USER1.getUserIdentifier())).willReturn(
+            Optional.of(USER1));
         given(passwordEncoder.matches(any(), any())).willReturn(true);
 
         userService.login(LOGIN_REQUEST,servletResponse);
@@ -63,7 +65,8 @@ class UserServiceImplTest {
     @DisplayName("로그인 실패")
     void login_False() {
         MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-        given(userRepository.findByUserIdentifier(USER1.getUserIdentifier())).willReturn(USER1);
+        given(userRepository.findByUserIdentifier(USER1.getUserIdentifier())).willReturn(
+            Optional.of(USER1));
         given(passwordEncoder.matches(any(), any())).willReturn(false);
 
         assertThatThrownBy(() ->
