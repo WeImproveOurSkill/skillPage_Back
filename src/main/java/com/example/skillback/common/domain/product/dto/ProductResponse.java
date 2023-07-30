@@ -1,6 +1,7 @@
 package com.example.skillback.common.domain.product.dto;
 
-import com.example.skillback.common.enums.ProductStateEnum;
+import com.example.skillback.common.domain.product.entity.Product;
+import com.example.skillback.common.enums.ProductSellState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,17 @@ public class ProductResponse {
     private String productDes;
     private Long productPrice;
     private Long viewCnt;
-    private ProductStateEnum productStateEnum;
+    private ProductSellState productSellState;
+
+    public ProductResponse changeProductResponse(Product product) {
+        this.productName = product.getProductName();
+        this.productPic = product.getProductPic();
+        this.productDes = product.getProductDes();
+        this.productPrice = product.getProductPrice();
+        this.viewCnt = product.getViewCnt();
+        this.productSellState = product.getProductSellState();
+
+    }
+
 
 }
