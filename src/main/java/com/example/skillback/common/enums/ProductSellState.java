@@ -1,6 +1,6 @@
 package com.example.skillback.common.enums;
 
-public enum ProductStateEnum {
+public enum ProductSellState {
     NEW,
     RESERVED,
     SOLDOUT,

@@ -15,7 +15,14 @@ public class HttpResponseEntity {
     public static final ResponseEntity<StatusResponse> RESPONSE_CREATED =
         ResponseEntity.status(HttpStatus.CREATED)
             .build();
+
+    public static final ResponseEntity<StatusResponse> RESPONSE_UPDATE =
+        ResponseEntity.status(HttpStatus.UPGRADE_REQUIRED)
+            .build();
+
     public static final ResponseEntity<StatusResponse> RESPONSE_DELETED =
         ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
+
+
 }
