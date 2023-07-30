@@ -2,10 +2,12 @@ package com.example.skillback.common.domain.product.entity;
 
 import com.example.skillback.common.TimeStamped;
 import com.example.skillback.common.domain.category.entity.Category;
+import com.example.skillback.common.domain.product.dto.UpdateProductRequest;
 import com.example.skillback.common.domain.question.entity.Question;
 import com.example.skillback.common.domain.review.entity.Review;
 import com.example.skillback.common.domain.user.entity.User;
-import com.example.skillback.common.enums.ProductStateEnum;
+import com.example.skillback.common.enums.ProductSellState;
+import com.example.skillback.common.enums.ProductState;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,8 +26,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-import org.springframework.cache.annotation.CacheConfig;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +36,8 @@ import org.springframework.cache.annotation.CacheConfig;
 @Getter
 @Entity
 @Table(name = "products")
+@DynamicInsert
+@DynamicUpdate
 public class Product extends TimeStamped {
 
     @Id
@@ -56,9 +61,13 @@ public class Product extends TimeStamped {
     @Column(name = "view_cnt")
     private Long viewCnt = 0L;
 
+    @Column(name = "product_sell_state")
+    @Enumerated(EnumType.STRING)
+    private ProductSellState productSellState;
+
     @Column(name = "product_state")
     @Enumerated(EnumType.STRING)
-    private ProductStateEnum productStateEnum;
+    private ProductState productState;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
@@ -75,4 +84,11 @@ public class Product extends TimeStamped {
     @ManyToOne
     @JoinColumn(name = "category_type")
     private Category category;
+
+    public void update(UpdateProductRequest updateProductRequest) {
+        this.productName = updateProductRequest.getProductName();
+        this.productPrice = updateProductRequest.getProductPrice();
+        this.productState = updateProductRequest.getProductState();
+        this.productPic = updateProductRequest.getProductPic();
+    }
 }
