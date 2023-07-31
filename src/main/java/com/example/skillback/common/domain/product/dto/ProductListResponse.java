@@ -17,7 +17,7 @@ public class ProductListResponse {
     private Long productPrice;
     private String productPic;
 
-    public ProductListResponse changeProductList(Product product) {
+    public ProductListResponse (Product product) {
         this.productName = product.getProductName();
         this.productPrice = product.getProductPrice();
         this.productPic = product.getProductPic();
