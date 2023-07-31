@@ -19,7 +19,7 @@ public class ProductResponse {
     private Long viewCnt;
     private ProductSellState productSellState;
 
-    public ProductResponse changeProductResponse(Product product) {
+    public ProductResponse (Product product) {
         this.productName = product.getProductName();
         this.productPic = product.getProductPic();
         this.productDes = product.getProductDes();
