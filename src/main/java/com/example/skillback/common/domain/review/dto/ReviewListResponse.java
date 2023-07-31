@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReviewListResponse {
 
     private String reviewWriter;
-    private Long reviewScore;
+    private int reviewScore;
     private String reviewContent;
     private Long likeCnt;
     private Long hateCnt;
