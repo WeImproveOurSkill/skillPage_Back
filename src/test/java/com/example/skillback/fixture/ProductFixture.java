@@ -1,9 +1,12 @@
 package com.example.skillback.fixture;
 
+import static com.example.skillback.fixture.UserFixture.USER1;
+
 import com.example.skillback.common.domain.product.dto.ProductListResponse;
 import com.example.skillback.common.domain.product.dto.ProductRequest;
 import com.example.skillback.common.domain.product.dto.ProductResponse;
 import com.example.skillback.common.domain.product.dto.UpdateProductRequest;
+import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.enums.ProductState;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,5 +46,17 @@ public class ProductFixture {
 
     public static final List<ProductListResponse> PRODUCT_LIST_RESPONSE_LIST =
         new ArrayList<>(Collections.singletonList(PRODUCT_LIST_RESPONSE));
+    public static final Product PRODUCT = Product.builder()
+        .id(1L)
+        .user(USER1)
+        .productName("productName")
+        .productDes("productDes")
+        .productPic(null)
+        .productState(ProductState.새상품)
+        .category(null)
+        .productPrice(1000L)
+        .viewCnt(1L)
+        .build();
+
 
 }
