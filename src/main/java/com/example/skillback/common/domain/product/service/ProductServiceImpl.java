@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public List<ProductListResponse> getProductList() {
         List<Product> productList = productRepository.findAll();
-        return productList.stream().map(new ProductListResponse()::).toList();
+        return productList.stream().map(product -> new ProductListResponse(product)).toList();
+
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ProductServiceImpl implements ProductService{
         Product product = findProductById(updateProductRequest.getProductId());
         if (product.getUser().equals(user)) {
             product.update(updateProductRequest);
-        }else {
+        } else {
             throw new IllegalArgumentException("해당 사용자는 접근 권한이 없습니다");
         }
     }
