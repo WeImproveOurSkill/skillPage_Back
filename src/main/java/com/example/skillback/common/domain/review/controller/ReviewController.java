@@ -12,7 +12,9 @@ import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.service.ReviewService;
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.security.UserDetailsImpl;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,8 +39,8 @@ public class ReviewController {
 
     @PostMapping("/product/{productId}")
     public ResponseEntity<StatusResponse> createReview(@PathVariable Long productId,
-        @RequestBody CreateReviewRequest createReviewRequest,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                                       @RequestBody CreateReviewRequest createReviewRequest,
+                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         reviewService.createReview(productId, createReviewRequest, userDetails.getUser());
         return RESPONSE_CREATED;
     }
@@ -48,21 +50,22 @@ public class ReviewController {
         List<ReviewListResponse> reviewListResponses = reviewService.getReviewList(productId);
         return ResponseEntity.ok().body(reviewListResponses);
     }
-    @GetMapping("/product/{productId}/{reviewId}")
-    public ResponseEntity<ReviewResponse> getReviewList(@PathVariable Long productId, @PathVariable Long reviewId) {
-        ReviewResponse reviewResponse = reviewService.getReview(productId, reviewId);
+
+    @GetMapping("/product/{reviewId}")
+    public ResponseEntity<ReviewResponse> getReview(@PathVariable Long reviewId) {
+        ReviewResponse reviewResponse = reviewService.getReview(reviewId);
         return ResponseEntity.ok().body(reviewResponse);
     }
 
     @PatchMapping("/{reviewId}/product")
-    public ResponseEntity<StatusResponse> udpateReview(@PathVariable Long reviewId,@RequestBody UpdateReviewRequest updateReviewRequest) {
+    public ResponseEntity<StatusResponse> udpateReview(@PathVariable Long reviewId, @RequestBody UpdateReviewRequest updateReviewRequest) {
         reviewService.updateReview(reviewId, updateReviewRequest);
         return RESPONSE_UPDATE;
     }
 
     @DeleteMapping("/{reviewId}/product")
     public ResponseEntity<StatusResponse> deleteReview(@PathVariable Long reviewId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         reviewService.deleteReview(reviewId, userDetails.getUser());
         return RESPONSE_DELETED;
     }

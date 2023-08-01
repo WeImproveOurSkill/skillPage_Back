@@ -15,7 +15,7 @@ public interface ReviewService {
 
     List<ReviewListResponse> getReviewList(Long productId);
 
-    ReviewResponse getReview(Long productId, Long reviewId);
+    ReviewResponse getReview(Long reviewId);
 
     void updateReview(Long reviewId, UpdateReviewRequest updateReviewRequest);
 

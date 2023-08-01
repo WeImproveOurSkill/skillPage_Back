@@ -9,7 +9,6 @@ import com.example.skillback.common.domain.review.dto.ReviewResponse;
 import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.entity.Review;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ReviewFixture {
         .build();
 
     public static final UpdateReviewRequest UPDATE_REVIEW_REQUEST = UpdateReviewRequest.builder()
-        .reviewText("updateText")
+        .reviewContent("updateText")
         .build();
 
 
