@@ -8,6 +8,10 @@ import com.example.skillback.common.domain.review.dto.ReviewListResponse;
 import com.example.skillback.common.domain.review.dto.ReviewResponse;
 import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.entity.Review;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class ReviewFixture {
 
@@ -48,5 +52,12 @@ public class ReviewFixture {
         .hateCnt(1L)
         .filePic(null)
         .build();
+
+    public static final List<Review> REVIEW_LIST = new ArrayList<>(
+        Collections.singletonList(REVIEW));
+
+    public static final List<ReviewListResponse> REVIEW_LIST_RESPONSES = new ArrayList<>(
+        Collections.singletonList(REVIEW_LIST_RESPONSE)
+    );
 
 }
