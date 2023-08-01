@@ -1,5 +1,6 @@
 package com.example.skillback.common.domain.review.service;
 
+import static com.example.skillback.fixture.ProductFixture.PRODUCT;
 import static com.example.skillback.fixture.ProductFixture.PRODUCT_ID;
 import static com.example.skillback.fixture.ReviewFixture.CREATE_REVIEW_REQUEST;
 import static com.example.skillback.fixture.ReviewFixture.REVIEW;
@@ -65,7 +66,7 @@ class ReviewServiceImplTest {
         //when
         reviewService.getReviewList(PRODUCT_ID);
         //then
-        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT_ID);
+        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT);
     }
 
     @Test

@@ -8,4 +8,5 @@ import lombok.ToString;
 public class UpdateQuestionRequest {
 
     private Boolean viewOpen;
+    private String questionContent;
 }

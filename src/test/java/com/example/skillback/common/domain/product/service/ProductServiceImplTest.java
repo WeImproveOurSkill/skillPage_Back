@@ -33,7 +33,7 @@ class ProductServiceImplTest {
     ProductRepository productRepository;
 
     @InjectMocks
-    ProductService productService;
+    ProductServiceImpl productService;
 
     @Test
     void createProduct() {
