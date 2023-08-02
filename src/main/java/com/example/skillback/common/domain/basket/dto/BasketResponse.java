@@ -14,11 +14,13 @@ public class BasketResponse {
 
     private Long basketId;
     private String productName;
+    private Long productPrice;
     private Long productCnt;
 
     public BasketResponse(Basket basket) {
         this.basketId = basket.getId();
         this.productName = basket.getProduct().getProductName();
+        this.productPrice = basket.getProduct().getProductPrice();
         this.productCnt = basket.getProductCnt();
 
     }
