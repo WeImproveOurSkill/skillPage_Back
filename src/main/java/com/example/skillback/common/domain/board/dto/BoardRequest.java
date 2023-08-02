@@ -1,5 +1,6 @@
 package com.example.skillback.common.domain.board.dto;
 
+import com.example.skillback.common.enums.BoardCategotyEnum;
 import com.example.skillback.common.enums.BoardEnum;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class BoardRequest {
 
-    private BoardEnum category;
+    private BoardCategotyEnum boardCategotyEnum;
+    private String title;
     private String content;
 }

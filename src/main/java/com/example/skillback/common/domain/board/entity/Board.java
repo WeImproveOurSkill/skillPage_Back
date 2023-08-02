@@ -1,6 +1,7 @@
 package com.example.skillback.common.domain.board.entity;
 
 import com.example.skillback.common.TimeStamped;
+import com.example.skillback.common.domain.board.dto.BoardRequest;
 import com.example.skillback.common.domain.category.entity.Category;
 import com.example.skillback.common.domain.comment.entity.Comment;
 import com.example.skillback.common.domain.user.entity.User;
@@ -43,6 +44,9 @@ public class Board extends TimeStamped {
     @Builder.Default
     private Long boardLike = 0L;
 
+    @Column
+    private String title;
+
     @Column(name = "board_content")
     private String content;
 
@@ -59,8 +63,18 @@ public class Board extends TimeStamped {
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
+    public void plusLike() {
+        this.boardLike += 1;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    public void update(BoardRequest boardRequest) {
+        this.boardCategotyEnum = boardRequest.getBoardCategotyEnum();
+        this.title = boardRequest.getTitle();
+        this.content = boardRequest.getContent();
+    }
+
+//
+//    @ManyToOne
+//    @JoinColumn(name = "category_id")
+//    private Category category;
 }

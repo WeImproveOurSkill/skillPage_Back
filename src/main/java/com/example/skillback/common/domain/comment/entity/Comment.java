@@ -2,6 +2,7 @@ package com.example.skillback.common.domain.comment.entity;
 
 import com.example.skillback.common.TimeStamped;
 import com.example.skillback.common.domain.board.entity.Board;
+import com.example.skillback.common.domain.comment.dto.CommentRequest;
 import com.example.skillback.common.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,4 +45,11 @@ public class Comment extends TimeStamped {
     @JoinColumn(name = "comment_writer")
     private User user;
 
+    public void plusLike() {
+        this.commentLike += 1;
+    }
+
+    public void update(CommentRequest commentRequest) {
+        this.commentContent = commentRequest.getCommentContent();
+    }
 }
