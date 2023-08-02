@@ -1,6 +1,7 @@
 package com.example.skillback.common.domain.product.entity;
 
 import com.example.skillback.common.TimeStamped;
+import com.example.skillback.common.domain.basket.entity.Basket;
 import com.example.skillback.common.domain.category.entity.Category;
 import com.example.skillback.common.domain.product.dto.UpdateProductRequest;
 import com.example.skillback.common.domain.question.entity.Question;
@@ -76,6 +77,10 @@ public class Product extends TimeStamped {
     @Builder.Default
     @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Basket> basketList = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "product")
