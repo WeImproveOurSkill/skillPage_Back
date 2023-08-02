@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public List<ProductListResponse> getProductList() {
         List<Product> productList = productRepository.findAll();
-        return productList.stream().map(product -> new ProductListResponse(product)).toList();
+        return productList.stream().map(ProductListResponse::new).toList();
 
     }
 

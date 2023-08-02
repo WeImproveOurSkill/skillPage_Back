@@ -82,7 +82,15 @@ public class User {
 
     @Builder.Default
     @OneToMany(mappedBy = "user")
-    private List<Question> questions = new ArrayList<>();
+    private List<Question> questionList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "user")

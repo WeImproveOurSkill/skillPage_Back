@@ -69,8 +69,8 @@ class ReviewServiceImplTest {
         reviewService.getReviewList(PRODUCT_ID);
         //then
 
-        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT);
 
+        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT);
 
     }
 

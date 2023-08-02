@@ -7,6 +7,7 @@ import lombok.ToString;
 @ToString
 public class CreateBasketRequest {
 
+//    private Long productId;
     private Long productCnt;
 
 }
