@@ -63,4 +63,8 @@ public class Question extends TimeStamped {
         this.view_open = viewOpen;
 
     }
+
+    public void updateAnswer(Answer answer) {
+        this.answer = answer;
+    }
 }

@@ -7,6 +7,6 @@ import lombok.ToString;
 @ToString
 public class AnswerRequire {
 
-    private String answerText;
+    private String answerContent;
 
 }

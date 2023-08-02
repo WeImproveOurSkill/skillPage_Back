@@ -1,5 +1,6 @@
 package com.example.skillback.common.domain.user.entity;
 
+import com.example.skillback.common.domain.answer.entity.Answer;
 import com.example.skillback.common.domain.board.entity.Board;
 import com.example.skillback.common.domain.comment.entity.Comment;
 import com.example.skillback.common.domain.file.entity.FileForm;
@@ -82,6 +83,10 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Question> questions = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
 
 
     @Builder.Default
