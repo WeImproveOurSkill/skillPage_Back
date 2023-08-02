@@ -1,11 +1,17 @@
 package com.example.skillback.common.domain.question.controller;
 
 import static com.example.skillback.common.domain.question.controller.QuestionController.Question_API_URI;
+import static com.example.skillback.common.utils.HttpResponseEntity.*;
 
 import com.example.skillback.common.domain.question.dto.CreateQuestionRequest;
+import com.example.skillback.common.domain.question.dto.QuestionResponse;
 import com.example.skillback.common.domain.question.dto.UpdateQuestionRequest;
 import com.example.skillback.common.domain.question.service.QuestionService;
+import com.example.skillback.common.dtos.StatusResponse;
+import com.example.skillback.common.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,32 +27,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
 
     public static final String Question_API_URI = "/question";
-//    private final QuestionService questionService;
+    private final QuestionService questionService;
 
     @PostMapping("/cq/product/{productId}")
-    public void createQuestion(@PathVariable Long productId,
-        @RequestBody CreateQuestionRequest createQuestionRequest) {
-        System.out.println(productId);
-        System.out.println(createQuestionRequest);
+    public ResponseEntity<StatusResponse> createQuestion(@PathVariable Long productId,
+                                                         @RequestBody CreateQuestionRequest createQuestionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.createQuestion(productId, createQuestionRequest, userDetails.getUser());
+        return RESPONSE_CREATED;
+
     }
 
-    @GetMapping("/rq/{questionId}/product/{productId}")
-    public void getQuestion(@PathVariable Long questionId, @PathVariable Long productId) {
-        System.out.println(questionId);
-        System.out.println(productId);
+    @GetMapping("/rq/{questionId}")
+    public ResponseEntity<QuestionResponse> getQuestion(@PathVariable Long questionId) {
+        QuestionResponse question = questionService.getQuestion(questionId);
+        return ResponseEntity.ok().body(question);
     }
 
-    @PatchMapping("/pq/{questionId}/product/{productId}")
-    public void updateQuestion(@PathVariable Long questionId, @PathVariable Long productId,
-        @RequestBody UpdateQuestionRequest updateQuestionRequest) {
+    @PatchMapping("/pq/{questionId}")
+    public ResponseEntity<StatusResponse> updateQuestion(@PathVariable Long questionId,
+        @RequestBody UpdateQuestionRequest updateQuestionRequest,
+                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        System.out.println(questionId);
-        System.out.println(productId);
-        System.out.println(updateQuestionRequest);
+        questionService.updateQuestion(questionId, updateQuestionRequest, userDetails.getUser());
+        return RESPONSE_UPDATE;
     }
 
     @DeleteMapping("/dq/{questionId}")
-    public void deleteQuestion(@PathVariable Long questionId) {
-        System.out.println(questionId);
+    public ResponseEntity<StatusResponse> deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.deleteQuestion(questionId, userDetails.getUser());
+        return RESPONSE_DELETED;
     }
 }

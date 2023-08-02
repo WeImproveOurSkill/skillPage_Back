@@ -55,5 +55,16 @@ public class Question extends TimeStamped {
     private Answer answer;
 
 
+    public void updateContent(String questionContent) {
+        this.questionContent = questionContent;
+    }
 
+    public void updateView(Boolean viewOpen) {
+        this.view_open = viewOpen;
+
+    }
+
+    public void updateAnswer(Answer answer) {
+        this.answer = answer;
+    }
 }
