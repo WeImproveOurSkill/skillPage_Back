@@ -92,6 +92,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
+
 
     @Builder.Default
     @OneToMany(mappedBy = "user")
