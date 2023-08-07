@@ -5,6 +5,7 @@ import com.example.skillback.common.domain.board.dto.BoardRequest;
 import com.example.skillback.common.domain.board.dto.BoardResponse;
 import com.example.skillback.common.domain.board.entity.Board;
 import com.example.skillback.common.domain.board.repository.BoardRepository;
+import com.example.skillback.common.domain.comment.dto.CommentResponse;
 import com.example.skillback.common.domain.user.entity.User;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -43,7 +44,12 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public BoardResponse getBoard(Long boardId) {
         Board board = getBoardById(boardId);
-        return new BoardResponse(board);
+        return BoardResponse.builder()
+            .userName(board.getUser().getUserIdentifier())
+            .title(board.getTitle())
+            .content(board.getContent())
+            .comments(board.getCommentList().stream().map(CommentResponse::new).collect(Collectors.toList()))
+            .build();
     }
 
     @Override
