@@ -15,15 +15,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Builder
 @Entity
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -37,7 +43,8 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Category parent;
+    @Builder.Default
+    private Category parent =null;
 
 
     @Column(name = "category_type")
