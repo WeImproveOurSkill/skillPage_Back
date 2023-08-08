@@ -63,6 +63,10 @@ public class Board extends TimeStamped {
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "category_type")
+    private Category category;
+
     public void plusLike() {
         this.boardLike += 1;
     }
