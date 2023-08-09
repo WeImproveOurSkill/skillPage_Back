@@ -16,7 +16,5 @@ jasypt:
     property:
       prefix: ENC(
       suffix: )
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    bean: jasyptStringEncryptor
-    password: 230809
+      bean: jasyptStringEncryptor
+      password: ENC(ykR6sevQXU/gYFcNEx/Vqw==)
