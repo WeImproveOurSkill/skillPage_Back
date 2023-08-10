@@ -8,13 +8,13 @@ import lombok.Getter;
 public class UserSignupRequest {
 
     private String userIdentifier;
-
-    private String userName;
-
+    private String password;
     private String email;
 
+
+    private String userName;
     private String phoneNumber;
 
-    private String password;
+
 
 }

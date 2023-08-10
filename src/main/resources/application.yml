@@ -18,3 +18,8 @@ jasypt:
       suffix: )
       bean: jasyptStringEncryptor
       password: ENC(ykR6sevQXU/gYFcNEx/Vqw==)
+
+#sms:
+#  api:
+#    key:ENC(hqDbSIeGYUv1bEXSzhyQde3thwaKhCnoS6O/eGQOUgI=)
+#    secret:ENC(bGkc/z4XEjdGNLMBCo9yCnJZbIiITUnNdb0TvWkERqA7GRwsxhMZWpubKp5TAAxB)
