@@ -7,6 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
 jwt:
   secret:
     key: ENC(BCTdm+KRfD8KK13KY6Gi3mnlIC+xJkJFrwGTRvkLQ1F9RmmAPkHk71u6T2g+g2jts+SiuOO8BGiK9WdQT56zdTRzEkynvhcQnhWh9cIqytMiPuBsWqx12y2jB/7lu9rYuIs5MfFrR8A4il5WlSL4zIjaujDBNGsFQfnfNrjfgV8qJReGMzGA6g==)

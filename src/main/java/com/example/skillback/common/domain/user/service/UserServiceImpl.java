@@ -49,15 +49,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
-        String userIdentifier = loginRequest.getUserIdentifier();
-        String password = passwordEncoder.encode(loginRequest.getPassword());
-        User user = userRepository.findByUserIdentifier(userIdentifier).orElseThrow(()-> new UsernameNotFoundException("해당 사용자르 찾을 수 없습니다."));
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
-        }
-        String accessToken = jwtUtil.createAccessToken(user.getUserIdentifier(),
-            user.getRollEnum());
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+//        String userIdentifier = loginRequest.getUserIdentifier();
+//        String password = passwordEncoder.encode(loginRequest.getPassword());
+//        User user = userRepository.findByUserIdentifier(userIdentifier).orElseThrow(()-> new UsernameNotFoundException("해당 사용자르 찾을 수 없습니다."));
+//        if (!passwordEncoder.matches(password, user.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
+//        }
+//        String accessToken = jwtUtil.createAccessToken(user.getUserIdentifier(),
+//            user.getRollEnum());
+//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
 
 
     }

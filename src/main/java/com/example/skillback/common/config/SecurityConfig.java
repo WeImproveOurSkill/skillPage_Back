@@ -1,12 +1,15 @@
 package com.example.skillback.common.config;
 
 import com.example.skillback.common.jwt.JwtUtil;
+
 import com.example.skillback.common.security.JwtAuthFilter;
+import com.example.skillback.common.security.UserDetailsImpl;
 import com.example.skillback.common.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,14 +30,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+//    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
-
-
-    private final String[] permitAllArray = {
-        "/**",
-        "/member1/**"
-    };
+//    @Bean
+//    public SecurityFilterChain exceptionResources(HttpSecurity http) throws Exception {
+//        http
+//            .authorizeHttpRequests(resources ->
+//                resources.requestMatchers("/templates/**").permitAll()
+//                    .anyRequest().authenticated());
+//
+//        return http.build();
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,23 +49,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-            .cors(Customizer.withDefaults());
+        http
+            .csrf(AbstractHttpConfigurer::disable);
+//            .cors(Customizer.withDefaults());
 
-        http.authorizeHttpRequests(auth ->
-                auth.requestMatchers(HttpMethod.OPTIONS, "/**")
-                    .authenticated())
+        http
+            .authorizeHttpRequests(auth ->
+                auth.requestMatchers("/**").permitAll()
+                    .anyRequest().authenticated())
             .addFilterBefore(new JwtAuthFilter(userDetailsService, jwtUtil),
                 UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
 }

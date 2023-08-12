@@ -1,6 +1,9 @@
 package com.example.skillback.common.security;
 
+import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.jwt.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +33,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
@@ -37,13 +40,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (token != null) {
             if (!jwtUtil.validToken(token)) {
-                Claims userInformation = jwtUtil.getUserInformation(token);
-                String userIdentifier = userInformation.getSubject();
-                setAuthentication(userIdentifier);
+                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
+            Claims userInformation = jwtUtil.getUserInformation(token);
+            String userIdentifier = userInformation.getSubject();
+            setAuthentication(userIdentifier);
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
     private Authentication createAuthentication(String userIdentifier) {
@@ -58,5 +62,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+    }
+
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        try {
+            String json = new ObjectMapper().writeValueAsString(
+                new StatusResponse(statusCode, msg));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
