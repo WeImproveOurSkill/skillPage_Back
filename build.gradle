@@ -30,9 +30,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
-    // sms 인증
-    // https://mvnrepository.com/artifact/net.nurigo/javaSDK
-    implementation 'net.nurigo:javaSDK:2.2'
+//    // sms 인증
+//    // https://mvnrepository.com/artifact/net.nurigo/javaSDK
+//    implementation 'net.nurigo:javaSDK:2.2'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
 
     compileOnly 'org.projectlombok:lombok'

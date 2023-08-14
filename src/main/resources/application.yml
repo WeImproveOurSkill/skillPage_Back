@@ -24,3 +24,8 @@ jasypt:
 #  api:
 #    key:ENC(hqDbSIeGYUv1bEXSzhyQde3thwaKhCnoS6O/eGQOUgI=)
 #    secret:ENC(bGkc/z4XEjdGNLMBCo9yCnJZbIiITUnNdb0TvWkERqA7GRwsxhMZWpubKp5TAAxB)
+naver-cloud-sms:
+    accessKey : ENC(5wwTcERjvNpmjHA/qB+lSpZdm2erVgj7ld4Ijchv9PQ=)
+    secretKey : ENC(audWiDwpq8T73Z7kwiG7kIVS77lFfZF+Abi1NCidWxC0ZW9dKfMQ7Cf4+ymiyhx3oChAnttlH+k=)
+    serviceId : ENC(hlB2z5V8RTseFodeyp18PGDSWYX5j19iKh2ReMuwydMGqtmEpHA1TBrX62wI2VWs)
+    senderPhone : ENC(6dAHqxxrY3AsV50scucgKZNtWXMDWznW)
