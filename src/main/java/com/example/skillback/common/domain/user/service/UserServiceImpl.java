@@ -26,7 +26,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void signup(UserSignupRequest userSignupRequest) {
+    public void signup(UserSignupRequest userSignupRequest, HttpServletResponse response) {
+        User user = makeUser(userSignupRequest);
+        userRepository.save(user);
+        String accessToken = getAccessToken(user);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+    }
+
+    private User makeUser(UserSignupRequest userSignupRequest) {
         String userName = userSignupRequest.getUserName();
         String userIdentifier = userSignupRequest.getUserIdentifier();
         String password = passwordEncoder.encode(userSignupRequest.getPassword());
@@ -42,26 +49,47 @@ public class UserServiceImpl implements UserService {
             .email(email)
             .rollEnum(RollEnum.CUSTOMER)
             .build();
-
-        userRepository.save(user);
+        return user;
     }
 
     @Override
     @Transactional
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
-//        String userIdentifier = loginRequest.getUserIdentifier();
-//        String password = passwordEncoder.encode(loginRequest.getPassword());
-//        User user = userRepository.findByUserIdentifier(userIdentifier).orElseThrow(()-> new UsernameNotFoundException("해당 사용자르 찾을 수 없습니다."));
-//        if (!passwordEncoder.matches(password, user.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
-//        }
-//        String accessToken = jwtUtil.createAccessToken(user.getUserIdentifier(),
-//            user.getRollEnum());
-//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-
-
+        String userIdentifier = loginRequest.getUserIdentifier();
+        String password = passwordEncoder.encode(loginRequest.getPassword());
+        User user = findByUserIdentifier(userIdentifier);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
+        }
+        String accessToken = getAccessToken(user);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
     }
 
+    private String getAccessToken(User user) {
+        return jwtUtil.createAccessToken(user.getUserIdentifier(),
+            user.getRollEnum());
+    }
+
+    @Override
+    public void deleteUser(User user, String password) {
+        User user1 = findByUserIdentifier(user.getUserIdentifier());
+        if (user.getPassword().equals(password)) {
+            userRepository.delete(user1);
+            return;
+        } else {
+            throw new IllegalArgumentException("해당 사용자는 접근권한이 없습니다");
+        }
+    }
+
+    @Override
+    public boolean checkDuplicateUserIdentifier(String userIdentifier) {
+        return userRepository.existsByUserIdentifier(userIdentifier);
+    }
+
+    private User findByUserIdentifier(String userIdentifier) {
+        return userRepository.findByUserIdentifier(userIdentifier)
+            .orElseThrow(() -> new UsernameNotFoundException("해당 사용자르 찾을 수 없습니다."));
+    }
 
 
 }
