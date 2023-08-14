@@ -2,25 +2,26 @@ package com.example.skillback.common.domain.user.controller;
 
 import static com.example.skillback.common.domain.user.controller.UserController.USER_API_URI;
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_CREATED;
+import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_DELETED;
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
-import com.example.skillback.common.domain.user.dto.DeleteUser;
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.FindPassword;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.service.UserService;
 import com.example.skillback.common.dtos.StatusResponse;
+import com.example.skillback.common.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -31,9 +32,16 @@ public class UserController {
     public static final String USER_API_URI = "/member1";
     private final UserService userService;
 
+
+    @GetMapping("/duplicate")
+    public boolean checkDuplicateUserIdentifier(
+        @RequestParam("userIdnetifier") String userIdentifier) {
+        return userService.checkDuplicateUserIdentifier(userIdentifier);
+    }
+
     @PostMapping("/join")
-    public ResponseEntity<StatusResponse> signup(@RequestBody UserSignupRequest signupRequest) {
-        userService.signup(signupRequest);
+    public ResponseEntity<StatusResponse> signup(@RequestBody UserSignupRequest signupRequest,HttpServletResponse response) {
+        userService.signup(signupRequest,response);
         return RESPONSE_CREATED;
     }
 
@@ -45,8 +53,9 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public void logout() {
-
+    public void logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        userService.logout(userDetails.getUser());
+        return;
     }
 
     @GetMapping("/find-id")
@@ -63,8 +72,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete-user")
-    public void deleteUser(@RequestBody DeleteUser deleteUser) {
-        System.out.println(deleteUser.getPassword());
+    public ResponseEntity<StatusResponse> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam("password") String password) {
+        userService.deleteUser(userDetails.getUser(),password);
+        return RESPONSE_DELETED;
     }
 
     //-------------------------

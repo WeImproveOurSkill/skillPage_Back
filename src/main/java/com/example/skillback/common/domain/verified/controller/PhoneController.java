@@ -5,9 +5,14 @@ import static com.example.skillback.common.domain.verified.controller.PhoneContr
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
 import com.example.skillback.common.domain.verified.dto.PhoneVerifiedRequest;
+import com.example.skillback.common.domain.verified.dto.SmsRespononse;
 import com.example.skillback.common.domain.verified.entity.PhoneVerified;
 import com.example.skillback.common.domain.verified.service.PhoneVerifiedService;
 import com.example.skillback.common.dtos.StatusResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +32,11 @@ public class PhoneController {
     private final PhoneVerifiedService phoneVerifiedService;
 
     @GetMapping("/phone")
-    public ResponseEntity<StatusResponse> createVerified(
-        @RequestParam("phoneNumber") String phoneNumber) {
-        phoneVerifiedService.sendNumber(phoneNumber);
-        return RESPONSE_OK;
+    public SmsRespononse createVerified(
+        @RequestParam("phoneNumber") String phoneNumber)
+        throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+        SmsRespononse smsRespononse = phoneVerifiedService.sendNumber(phoneNumber);
+        return smsRespononse ;
     }
 
     @PostMapping("/phone/check")
