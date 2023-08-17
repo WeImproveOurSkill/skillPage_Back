@@ -5,7 +5,11 @@ import lombok.Getter;
 @Getter
 public class PhoneVerifiedRequest {
 
-    private String phoneNumber;
-    private String code;
+    private String to;
+    private String content;
 
+    public PhoneVerifiedRequest(String phoneNumber, String number) {
+        this.to = phoneNumber;
+        this.content = number;
+    }
 }

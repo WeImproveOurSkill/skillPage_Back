@@ -19,6 +19,6 @@ public class SmsRequest {
 
     private String content;
 
-    private List<String> messages;
+    private List<PhoneVerifiedRequest> messages;
 
 }

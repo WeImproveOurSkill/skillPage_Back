@@ -33,6 +33,8 @@ out/
 /nbdist/
 /.nb-gradle/
 
+src/main/resources/application.yml
+
 #/src/main/java/com/example/skillback/common/domain/verified/service/PhoneVerifiedServiceImpl.java
 
 ### VS Code ###
