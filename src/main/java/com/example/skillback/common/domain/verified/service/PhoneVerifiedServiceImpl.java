@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -21,10 +22,12 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.http.HttpEntity;
@@ -33,6 +36,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 
 
 @Slf4j
@@ -46,6 +50,7 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
 
 //    private final RedisConnectionUtils redisConnectionUtils;
 
+
     @Value("${naver-cloud-sms.accessKey}")
     private String accessKey;
 
@@ -58,7 +63,9 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
     @Value("${naver-cloud-sms.senderPhone}")
     private String phone;
 
+
     public String getSignature(String time)
+
         throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         String space = " ";
         String newLine = "\n";
@@ -71,7 +78,9 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
             .append(space)
             .append(url)
             .append(newLine)
+
             .append(timestamp)
+
             .append(newLine)
             .append(accessKey)
             .toString();
@@ -81,21 +90,26 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
         mac.init(signingKey);
 
         byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+
         String encodeBase64String = Base64.getEncoder().encodeToString(rawHmac);
+
 
         return encodeBase64String;
     }
 
     @Override
     @Transactional
+
     public SmsResponse sendNumber(String phoneNumber)
         throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException {
+
         String time = Long.toString(System.currentTimeMillis());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-ncp-apigw-timestamp", time);
         headers.set("x-ncp-iam-access-key", accessKey);
+
         headers.set("x-ncp-apigw-signature-v2", getSignature(time)); // signature 서명
 
         ArrayList<PhoneVerifiedRequest> message = new ArrayList<>();
@@ -105,6 +119,7 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
 ////        phoneVerifiedRepository.save(verified);
         PhoneVerifiedRequest phoneVerifiedRequest = new PhoneVerifiedRequest(phoneNumber, number);
         message.add(phoneVerifiedRequest);
+
         SmsRequest smsRequest = SmsRequest.builder()
             .type("SMS")
             .countryCode("82")
@@ -118,11 +133,13 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
         objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
         String body = objectMapper.writeValueAsString(smsRequest);
         HttpEntity<String> stringHttpEntity = new HttpEntity<>(body, headers);
+
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ this.serviceId +"/messages"), stringHttpEntity, SmsResponse.class);
 //        SmsResponse response = new SmsResponse(smsConfirmNum);
         return smsResponse;
+
     }
 
     @Override
