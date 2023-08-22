@@ -8,6 +8,10 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
 jwt:
   secret:
     key: ENC(BCTdm+KRfD8KK13KY6Gi3mnlIC+xJkJFrwGTRvkLQ1F9RmmAPkHk71u6T2g+g2jts+SiuOO8BGiK9WdQT56zdTRzEkynvhcQnhWh9cIqytMiPuBsWqx12y2jB/7lu9rYuIs5MfFrR8A4il5WlSL4zIjaujDBNGsFQfnfNrjfgV8qJReGMzGA6g==)
@@ -25,7 +29,8 @@ jasypt:
 #    key:ENC(hqDbSIeGYUv1bEXSzhyQde3thwaKhCnoS6O/eGQOUgI=)
 #    secret:ENC(bGkc/z4XEjdGNLMBCo9yCnJZbIiITUnNdb0TvWkERqA7GRwsxhMZWpubKp5TAAxB)
 naver-cloud-sms:
-    accessKey : ENC(5wwTcERjvNpmjHA/qB+lSpZdm2erVgj7ld4Ijchv9PQ=)
-    secretKey : ENC(audWiDwpq8T73Z7kwiG7kIVS77lFfZF+Abi1NCidWxC0ZW9dKfMQ7Cf4+ymiyhx3oChAnttlH+k=)
-    serviceId : ENC(hlB2z5V8RTseFodeyp18PGDSWYX5j19iKh2ReMuwydMGqtmEpHA1TBrX62wI2VWs)
-    senderPhone : ENC(6dAHqxxrY3AsV50scucgKZNtWXMDWznW)
+    accessKey : ENC(TAB/kxScJwa0mF/LbXIZ2ak9iAaSbMJOjUJKnQNrWkY=)
+    secretKey : ENC(geSn12XqZFmmSxYr0FlgxISkHz+ZX+E20D5SB55PCR0oawTthPZYroMQGm3fJgqaQdi3nuV6jQw=)
+    serviceId : ENC(EVyAot+A6ow1ZtJG/dXT/rMxE6i8bJhiBKn6Vllt5ov928/a/zqmbrpIgmIPbTJp)
+    senderPhone : "01000000000"
+
