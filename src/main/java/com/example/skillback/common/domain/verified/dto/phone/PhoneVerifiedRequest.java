@@ -1,4 +1,4 @@
-package com.example.skillback.common.domain.verified.dto;
+package com.example.skillback.common.domain.verified.dto.phone;
 
 import lombok.Getter;
 

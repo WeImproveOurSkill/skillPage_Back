@@ -1,13 +1,12 @@
-package com.example.skillback.common.domain.verified.service;
+package com.example.skillback.common.domain.verified.service.phone;
 
 
 
-import com.example.skillback.common.domain.verified.dto.PhoneVerifiedRequest;
-import com.example.skillback.common.domain.verified.dto.SmsRequest;
-import com.example.skillback.common.domain.verified.dto.SmsResponse;
+import com.example.skillback.common.domain.verified.dto.phone.PhoneVerifiedRequest;
+import com.example.skillback.common.domain.verified.dto.phone.SmsRequest;
+import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
 import com.example.skillback.common.domain.verified.entity.PhoneVerified;
 
-import com.example.skillback.common.domain.verified.repository.PhoneVerifiedRepository;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +18,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -29,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

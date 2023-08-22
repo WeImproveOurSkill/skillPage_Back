@@ -30,16 +30,16 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
-//    // sms 인증
-//    // https://mvnrepository.com/artifact/net.nurigo/javaSDK
-//    implementation 'net.nurigo:javaSDK:2.2'
+    // sms 인증f
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-
     implementation 'org.apache.httpcomponents.client5:httpclient5'
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // email
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.1.2'
 
 
 
