@@ -34,3 +34,11 @@ naver-cloud-sms:
     serviceId : ENC(EVyAot+A6ow1ZtJG/dXT/rMxE6i8bJhiBKn6Vllt5ov928/a/zqmbrpIgmIPbTJp)
     senderPhone : "01000000000"
 
+java-mail:
+  hostname: ENC(EPeQgROSy1+/Ev6pMXGeYea5cwMwRQlX)
+  identifier: ENC(Hfd5ajAKGVf9PldJtig0JQ==)
+  password: ENC(dJIuacH5gbfOZHlDDHJkVfZMHaRdXLIa)
+  port: ENC(T4AuzQ7+K9X0O3rHuBQieA==)
+
+
+

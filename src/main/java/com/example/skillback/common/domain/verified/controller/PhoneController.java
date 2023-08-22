@@ -4,9 +4,9 @@ package com.example.skillback.common.domain.verified.controller;
 import static com.example.skillback.common.domain.verified.controller.PhoneController.VERIFIED_API_URI;
 
 
-import com.example.skillback.common.domain.verified.dto.SmsResponse;
+import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
 import com.example.skillback.common.domain.verified.entity.PhoneVerified;
-import com.example.skillback.common.domain.verified.service.PhoneVerifiedService;
+import com.example.skillback.common.domain.verified.service.phone.PhoneVerifiedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -30,7 +30,7 @@ public class PhoneController {
     private final PhoneVerifiedService phoneVerifiedService;
 
     @GetMapping("/phone")
-    public SmsResponse createVerified(
+    public SmsResponse checkPhoneVerified(
         @RequestParam("phoneNumber") String phoneNumber)
         throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException {
         SmsResponse smsRespononse = phoneVerifiedService.sendNumber(phoneNumber);

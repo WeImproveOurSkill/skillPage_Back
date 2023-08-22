@@ -1,7 +1,7 @@
-package com.example.skillback.common.domain.verified.service;
+package com.example.skillback.common.domain.verified.service.phone;
 
 
-import com.example.skillback.common.domain.verified.dto.SmsResponse;
+import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
 import com.example.skillback.common.domain.verified.entity.PhoneVerified;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
