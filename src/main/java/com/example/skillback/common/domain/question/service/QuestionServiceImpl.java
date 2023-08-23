@@ -4,12 +4,15 @@ import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.domain.product.repository.ProductRepository;
 import com.example.skillback.common.domain.question.dto.CreateQuestionRequest;
 import com.example.skillback.common.domain.question.dto.QuestionResponse;
+import com.example.skillback.common.domain.question.dto.QuestionResponsePage;
 import com.example.skillback.common.domain.question.dto.UpdateQuestionRequest;
 import com.example.skillback.common.domain.question.entity.Question;
 import com.example.skillback.common.domain.question.repository.QuestionRepository;
 import com.example.skillback.common.domain.user.entity.User;
+import com.example.skillback.common.dtos.PageDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
@@ -69,6 +72,13 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("해당 질문을 삭제할 수 없습니다");
         }
+    }
+
+    @Override
+    public Page<QuestionResponsePage> getQuestionPage(PageDto pageDto) {
+        Page<QuestionResponsePage> questionResponsePages = questionRepository.findAll(pageDto.toPageable())
+            .map(question -> new QuestionResponsePage(question));
+        return questionResponsePages;
     }
 
     private Product getProductByProductId(Long productId) {
