@@ -11,10 +11,13 @@ import com.example.skillback.common.domain.product.dto.ProductRequest;
 import com.example.skillback.common.domain.product.dto.ProductResponse;
 import com.example.skillback.common.domain.product.dto.UpdateProductRequest;
 import com.example.skillback.common.domain.product.service.ProductService;
+import com.example.skillback.common.dtos.PageDto;
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.security.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,9 +47,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductListResponse>> getProductList() {
-        List<ProductListResponse> productList = productService.getProductList();
-        return ResponseEntity.ok().body(productList);
+    public ResponseEntity<Page<ProductListResponse>> getProductList(@RequestBody PageDto pageDto) {
+        Page<ProductListResponse> productPages = productService.getProductList(pageDto);
+        return ResponseEntity.ok().body(productPages);
     }
 
     @GetMapping("/{productId}")

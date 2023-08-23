@@ -7,9 +7,11 @@ import com.example.skillback.common.domain.product.dto.UpdateProductRequest;
 import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.domain.product.repository.ProductRepository;
 import com.example.skillback.common.domain.user.entity.User;
+import com.example.skillback.common.dtos.PageDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -37,9 +39,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public List<ProductListResponse> getProductList() {
-        List<Product> productList = productRepository.findAll();
-        return productList.stream().map(ProductListResponse::new).toList();
+    public Page<ProductListResponse> getProductList(PageDto pageDto) {
+        Page<ProductListResponse> productPage = productRepository.findAll(pageDto.toPageable()).map(product -> new ProductListResponse(product));
+        return productPage;
 
     }
 
