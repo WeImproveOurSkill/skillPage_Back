@@ -10,12 +10,14 @@ import com.example.skillback.common.domain.review.dto.ReviewListResponse;
 import com.example.skillback.common.domain.review.dto.ReviewResponse;
 import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.service.ReviewService;
+import com.example.skillback.common.dtos.PageDto;
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.security.UserDetailsImpl;
 
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,8 +49,8 @@ public class ReviewController {
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ReviewListResponse>> getReviewList(@PathVariable Long productId) {
-        List<ReviewListResponse> reviewListResponses = reviewService.getReviewList(productId);
+    public ResponseEntity<Page<ReviewListResponse>> getReviewList(@PathVariable Long productId, @RequestBody PageDto pageDto) {
+        Page<ReviewListResponse> reviewListResponses = reviewService.getReviewList(productId,pageDto);
         return ResponseEntity.ok().body(reviewListResponses);
     }
 

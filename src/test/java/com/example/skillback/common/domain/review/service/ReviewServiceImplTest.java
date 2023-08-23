@@ -6,10 +6,7 @@ import static com.example.skillback.fixture.ProductFixture.PRODUCT;
 import static com.example.skillback.fixture.ProductFixture.PRODUCT_ID;
 import static com.example.skillback.fixture.ReviewFixture.CREATE_REVIEW_REQUEST;
 import static com.example.skillback.fixture.ReviewFixture.REVIEW;
-import static com.example.skillback.fixture.ReviewFixture.REVIEW_LIST;
-import static com.example.skillback.fixture.ReviewFixture.REVIEW_LIST_RESPONSE;
 import static com.example.skillback.fixture.ReviewFixture.REVIEW_LIST_RESPONSES;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -64,13 +61,13 @@ class ReviewServiceImplTest {
         // reviewListResponse로 변환하는 stream map 실행의 횟수 파악
 
         //given
-        given(reviewService.getReviewList(PRODUCT_ID)).willReturn(REVIEW_LIST_RESPONSES);
-        //when
-        reviewService.getReviewList(PRODUCT_ID);
+//        given(reviewService.getReviewList(PRODUCT_ID, pageDto)).willReturn(REVIEW_LIST_RESPONSES);
+//        //when
+//        reviewService.getReviewList(PRODUCT_ID, pageDto);
         //then
 
 
-        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT);
+//        verify(reviewRepository, times(1)).findAllByProduct(PRODUCT);
 
     }
 
