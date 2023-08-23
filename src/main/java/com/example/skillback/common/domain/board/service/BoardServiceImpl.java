@@ -7,10 +7,12 @@ import com.example.skillback.common.domain.board.entity.Board;
 import com.example.skillback.common.domain.board.repository.BoardRepository;
 import com.example.skillback.common.domain.comment.dto.CommentResponse;
 import com.example.skillback.common.domain.user.entity.User;
+import com.example.skillback.common.dtos.PageDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,9 +37,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
 
-    public List<BoardListResponse> getBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        return boardList.stream().map(BoardListResponse::new).collect(Collectors.toList());
+    public Page<BoardListResponse> getBoardList(PageDto pageDto) {
+        Page<BoardListResponse> boardList = boardRepository.findAll(pageDto.toPageable()).map(board -> new BoardListResponse(board));
+        return boardList;
     }
 
     @Override

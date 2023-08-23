@@ -11,10 +11,12 @@ import com.example.skillback.common.domain.board.dto.BoardResponse;
 import com.example.skillback.common.domain.board.dto.BoardListResponse;
 import com.example.skillback.common.domain.board.dto.BoardRequest;
 import com.example.skillback.common.domain.board.service.BoardService;
+import com.example.skillback.common.dtos.PageDto;
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.security.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,8 +44,8 @@ public class BoardController {
     }
 
     @GetMapping("/gb")
-    public ResponseEntity<List<BoardListResponse>> getBoardList() {
-        List<BoardListResponse> boardListResponseList = boardService.getBoardList();
+    public ResponseEntity<Page<BoardListResponse>> getBoardList(@RequestBody PageDto pageDto) {
+        Page<BoardListResponse> boardListResponseList = boardService.getBoardList(pageDto);
         return ResponseEntity.ok().body(boardListResponseList);
     }
 
