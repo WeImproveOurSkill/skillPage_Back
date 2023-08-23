@@ -5,11 +5,14 @@ import static com.example.skillback.common.utils.HttpResponseEntity.*;
 
 import com.example.skillback.common.domain.question.dto.CreateQuestionRequest;
 import com.example.skillback.common.domain.question.dto.QuestionResponse;
+import com.example.skillback.common.domain.question.dto.QuestionResponsePage;
 import com.example.skillback.common.domain.question.dto.UpdateQuestionRequest;
 import com.example.skillback.common.domain.question.service.QuestionService;
+import com.example.skillback.common.dtos.PageDto;
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,10 +46,16 @@ public class QuestionController {
         return ResponseEntity.ok().body(question);
     }
 
+    @GetMapping("/rq")
+    public ResponseEntity<Page<QuestionResponsePage>> getQuestions(@RequestBody PageDto pageDto) {
+        return ResponseEntity.ok().body(questionService.getQuestionPage(pageDto));
+    }
+
+
     @PatchMapping("/pq/{questionId}")
     public ResponseEntity<StatusResponse> updateQuestion(@PathVariable Long questionId,
         @RequestBody UpdateQuestionRequest updateQuestionRequest,
-                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         questionService.updateQuestion(questionId, updateQuestionRequest, userDetails.getUser());
         return RESPONSE_UPDATE;

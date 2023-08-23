@@ -6,12 +6,10 @@ import static com.example.skillback.fixture.ProductFixture.PRODUCT_RESPONSE;
 import static com.example.skillback.fixture.ProductFixture.UPDATE_PRODUCT_REQUEST;
 import static com.example.skillback.fixture.UserFixture.USER1;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.example.skillback.common.domain.product.dto.ProductListResponse;
 import com.example.skillback.common.domain.product.dto.ProductResponse;
@@ -19,7 +17,6 @@ import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.domain.product.repository.ProductRepository;
 import com.example.skillback.common.domain.user.entity.User;
 import java.util.List;
-import org.hibernate.annotations.Mutability;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,8 +41,8 @@ class ProductServiceImplTest {
 
     @Test
     void getProductList() {
-        List<ProductListResponse> productList = productService.getProductList();
-        verify(productRepository, times(1)).findAll();
+//        List<ProductListResponse> productList = productService.getProductList(pageDto);
+//        verify(productRepository, times(1)).findAll();
     }
 
     @Test

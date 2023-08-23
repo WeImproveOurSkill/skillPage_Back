@@ -9,8 +9,10 @@ import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.entity.Review;
 import com.example.skillback.common.domain.review.repository.ReviewRepository;
 import com.example.skillback.common.domain.user.entity.User;
+import com.example.skillback.common.dtos.PageDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,10 +34,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public List<ReviewListResponse> getReviewList(Long productId) {
+    public Page<ReviewListResponse> getReviewList(Long productId, PageDto pageDto) {
         Product product = getProductByProductId(productId);
-        List<Review> allByProduct = reviewRepository.findAllByProduct(product);
-        return allByProduct.stream().map(ReviewListResponse::new).collect(Collectors.toList());
+        Page<ReviewListResponse> allByProduct = reviewRepository.findAllByProduct(product,pageDto.toPageable()).map(review -> new ReviewListResponse(review));
+        return allByProduct;
     }
 
     @Override
