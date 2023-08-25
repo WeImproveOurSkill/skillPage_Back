@@ -2,27 +2,22 @@ package com.example.skillback.common.security;
 
 import com.example.skillback.common.dtos.StatusResponse;
 import com.example.skillback.common.jwt.JwtUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -31,23 +26,57 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtUtil;
+    private final RedisService redisService;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtUtil.resolveAccessToken(request);
+        String accessToken = jwtUtil.resolveAccessToken(request);
+        String refreshToken = jwtUtil.resolveRefreshToken(request);
 
-        if (token != null) {
-            if (!jwtUtil.validToken(token)) {
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
-                return;
+        if (accessToken != null) {
+            if (checkToken(accessToken)) {
+                if (refreshToken != null) {
+                    if (checkToken(refreshToken)) {
+                        jwtExceptionHandler(response, "Token Error",
+                            HttpStatus.UNAUTHORIZED.value());
+                        return;
+                    }
+                    Claims userInformation = jwtUtil.getUserInformation(refreshToken);
+                    String userIdentifier = userInformation.getSubject();
+                    if (redisService.exists(userIdentifier)) {
+                        addATKInHeader(response, userIdentifier);
+                        addRTKInHeader(response, userIdentifier);
+                        setAuthentication(userIdentifier);
+                    }
+                }
+
+            } else {
+                Claims info = jwtUtil.getUserInformation(accessToken);
+                String username = info.getSubject();
+                setAuthentication(username);
             }
-            Claims userInformation = jwtUtil.getUserInformation(token);
-            String userIdentifier = userInformation.getSubject();
-            setAuthentication(userIdentifier);
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean checkToken(String accessToken) {
+        return !jwtUtil.validToken(accessToken);
+    }
+
+    private void addRTKInHeader(HttpServletResponse response, String userIdentifier) {
+        String newRefreshToken = jwtUtil.crateRefreshToken(userIdentifier,
+            userDetailsService.RollLoadUserByUsername(userIdentifier));
+        redisService.deleteValues(newRefreshToken);
+        redisService.setValues(newRefreshToken,userIdentifier);
+        response.addHeader(JwtUtil.REFRESH_HEADER, newRefreshToken);
+    }
+
+    private void addATKInHeader(HttpServletResponse response, String userIdentifier) {
+        String newAccessToken = jwtUtil.createAccessToken(userIdentifier,
+            userDetailsService.RollLoadUserByUsername(userIdentifier));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken);
     }
 
     private Authentication createAuthentication(String userIdentifier) {
