@@ -5,6 +5,7 @@ import static com.example.skillback.common.domain.verified.controller.PhoneContr
 
 
 import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
+import com.example.skillback.common.domain.verified.dto.phone.VerifiedPhone;
 import com.example.skillback.common.domain.verified.entity.PhoneVerified;
 import com.example.skillback.common.domain.verified.service.phone.PhoneVerifiedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,7 +39,7 @@ public class PhoneController {
     }
 
     @PostMapping("/phone/check")
-    public boolean checkPhone(@RequestBody PhoneVerified phoneVerified) {
-        return phoneVerifiedService.verifiedCode(phoneVerified);
+    public boolean checkPhone(@RequestBody VerifiedPhone verified) {
+        return phoneVerifiedService.verifiedCode(verified);
     }
 }

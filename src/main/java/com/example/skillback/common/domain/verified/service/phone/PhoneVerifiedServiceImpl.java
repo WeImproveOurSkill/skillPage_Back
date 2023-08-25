@@ -5,8 +5,9 @@ package com.example.skillback.common.domain.verified.service.phone;
 import com.example.skillback.common.domain.verified.dto.phone.PhoneVerifiedRequest;
 import com.example.skillback.common.domain.verified.dto.phone.SmsRequest;
 import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
-import com.example.skillback.common.domain.verified.entity.PhoneVerified;
 
+import com.example.skillback.common.domain.verified.dto.phone.VerifiedPhone;
+import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,10 +43,7 @@ import org.springframework.web.client.RestTemplate;
 public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
 
     private final String smsConfirmNum = makeRandomNumber();
-
-//    private final PhoneVerifiedRepository phoneVerifiedRepository;
-
-//    private final RedisConnectionUtils redisConnectionUtils;
+    private final RedisService redisService;
 
 
     @Value("${naver-cloud-sms.accessKey}")
@@ -135,12 +133,17 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ this.serviceId +"/messages"), stringHttpEntity, SmsResponse.class);
 //        SmsResponse response = new SmsResponse(smsConfirmNum);
+        redisService.setValues(number,phoneNumber);
         return smsResponse;
 
     }
 
     @Override
-    public boolean verifiedCode(PhoneVerified phoneVerified) {
+    public boolean verifiedCode(VerifiedPhone phoneVerified) {
+        String values = redisService.getValues(phoneVerified.getNumber());
+        if (values.equals(phoneVerified.getPhoneNumber())) {
+            return true;
+        }
         return false;
     }
 
@@ -148,4 +151,5 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
         int num = (int) (Math.random() * 8999) + 1000;
         return String.valueOf(num);
     }
+
 }

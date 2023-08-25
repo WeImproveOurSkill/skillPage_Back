@@ -2,7 +2,7 @@ package com.example.skillback.common.domain.verified.service.phone;
 
 
 import com.example.skillback.common.domain.verified.dto.phone.SmsResponse;
-import com.example.skillback.common.domain.verified.entity.PhoneVerified;
+import com.example.skillback.common.domain.verified.dto.phone.VerifiedPhone;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -16,5 +16,5 @@ public interface PhoneVerifiedService {
         throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException;
 
 
-    boolean verifiedCode(PhoneVerified phoneVerified);
+    boolean verifiedCode(VerifiedPhone phoneVerified);
 }
