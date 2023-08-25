@@ -5,6 +5,7 @@ import com.example.skillback.common.jwt.JwtUtil;
 import com.example.skillback.common.security.JwtAuthFilter;
 import com.example.skillback.common.security.UserDetailsImpl;
 import com.example.skillback.common.security.UserDetailsServiceImpl;
+import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,7 @@ public class SecurityConfig {
 //    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final RedisService redisService;
 //    @Bean
 //    public SecurityFilterChain exceptionResources(HttpSecurity http) throws Exception {
 //        http
@@ -58,7 +60,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/**").permitAll()
                     .anyRequest().authenticated())
-            .addFilterBefore(new JwtAuthFilter(userDetailsService, jwtUtil),
+            .addFilterBefore(new JwtAuthFilter(userDetailsService, jwtUtil,redisService),
                 UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

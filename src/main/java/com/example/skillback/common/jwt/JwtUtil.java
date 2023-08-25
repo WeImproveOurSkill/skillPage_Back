@@ -1,6 +1,7 @@
 package com.example.skillback.common.jwt;
 
 import com.example.skillback.common.enums.RollEnum;
+import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,19 +25,21 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class JwtUtil {
 
+    private final RedisService redisService;
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
-//    public static final String ACCESS_HEADER = "ACCESS";
-    //    public static final String REFRESH_HEADER = "REFRESH";
+    public static final String REFRESH_HEADER = "Refresh";
 
     public static final String AUTHORIZATION_KEY = "auth";
+    public static final String REFRESH_KEY = "refresh";
+    public static final String BEARER_PREFIX = "Bearer ";
 
-    public static final String ACCESS_BEARER_PREFIX = "BEARER ";
     public static final Long ACCESS_TIME = 60 * 60 * 1000L;
     public static final Long REFRESH_TIME = 60 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
-        private Key key;
+    private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     @PostConstruct
@@ -47,7 +50,15 @@ public class JwtUtil {
 
     public String resolveAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(ACCESS_BEARER_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(REFRESH_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
@@ -55,7 +66,7 @@ public class JwtUtil {
 
     public String createAccessToken(String userIdentifier, RollEnum rollEnum) {
         Date date = new Date();
-        return ACCESS_BEARER_PREFIX +
+        return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(userIdentifier)
                 .claim(AUTHORIZATION_KEY, rollEnum)
@@ -63,6 +74,20 @@ public class JwtUtil {
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
+    }
+
+    public String crateRefreshToken(String userIdentifier, RollEnum rollEnum) {
+        Date date = new Date();
+        String token = BEARER_PREFIX +
+            Jwts.builder()
+                .setSubject(userIdentifier)
+                .claim(REFRESH_KEY, rollEnum)
+                .setExpiration(new Date(date.getTime() + REFRESH_TIME))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
+        redisService.setValues(token, userIdentifier);
+        return token;
     }
 
     public boolean validToken(String token) {
@@ -75,7 +100,7 @@ public class JwtUtil {
             log.info("Expired JwtToken : 기간이 만료된 토근입니다");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported Token : 지원되지않은 토큰입니다");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.info("IllegalArgument : 잘못된 형식의 토큰입니다");
         }
         return false;
@@ -84,7 +109,6 @@ public class JwtUtil {
     public Claims getUserInformation(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
-
 
 
 }

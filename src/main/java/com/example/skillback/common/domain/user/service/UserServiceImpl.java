@@ -7,6 +7,7 @@ import com.example.skillback.common.domain.user.repository.UserRepository;
 import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
 import com.example.skillback.common.jwt.JwtUtil;
+import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
     private final JwtUtil jwtUtil;
 
 
@@ -62,13 +64,23 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
         }
         String accessToken = getAccessToken(user);
+        String refreshToken = getToken(user);
+
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
+        redisService.setValues(refreshToken, user.getUserIdentifier());
+    }
+
+    private String getToken(User user) {
+        return jwtUtil.crateRefreshToken(user.getUserIdentifier(), user.getRollEnum());
     }
 
     private String getAccessToken(User user) {
         return jwtUtil.createAccessToken(user.getUserIdentifier(),
             user.getRollEnum());
     }
+
+
 
     @Override
     public void deleteUser(User user, String password) {

@@ -1,5 +1,7 @@
 package com.example.skillback.common.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -11,17 +13,23 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories
 public class RedisConfig {
 
+    @Value("${spring.data.redis.port}")
+    private int port;
+
+    @Value("${spring.data.redis.host}")
+    private String host;
+
 
     @Bean
     RedisConnectionFactory connectionFactory() {
-        return new LettuceConnectionFactory();
+
+        return new LettuceConnectionFactory(host, port);
     }
 
     @Bean
     RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-
         return template;
     }
 
