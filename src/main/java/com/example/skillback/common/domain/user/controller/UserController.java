@@ -6,12 +6,14 @@ import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_DEL
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
-import com.example.skillback.common.domain.user.dto.FindPassword;
+import com.example.skillback.common.domain.user.dto.changePasswordRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.service.UserService;
 import com.example.skillback.common.dtos.StatusResponse;
+import com.example.skillback.common.jwt.JwtUtil;
 import com.example.skillback.common.security.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,22 +55,24 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public void logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        userService.logout(userDetails.getUser());
-        return;
+    public ResponseEntity<StatusResponse> logout(
+        HttpServletRequest request,HttpServletResponse response) {
+        userService.logout(request);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, null);
+        response.addHeader(JwtUtil.REFRESH_HEADER, null);
+        return RESPONSE_OK;
     }
 
     @GetMapping("/find-id")
-    public void findId(@RequestBody FindIdRequest findId) {
-        System.out.println(findId.getUsername());
-        System.out.println(findId.getPhoneNumber());
+    public ResponseEntity<String> findId(@RequestBody FindIdRequest findId) {
+        String identifier = userService.findId(findId);
+        return ResponseEntity.ok().body(identifier);
     }
 
     @GetMapping("/find-password")
-    public void findPassword(@RequestBody FindPassword findPassword) {
-        System.out.println(findPassword.getPassword());
-        System.out.println(findPassword.getNewPassword());
-        System.out.println(findPassword.getNewCheckPassword());
+    public ResponseEntity<StatusResponse> changePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody changePasswordRequest changePassword) {
+        userService.changePassword(userDetails.getUser(), changePassword);
+        return RESPONSE_OK;
     }
 
     @DeleteMapping("/delete-user")
