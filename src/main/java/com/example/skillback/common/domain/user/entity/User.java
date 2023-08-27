@@ -95,4 +95,8 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileForm> fileFormList = new ArrayList<>();
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

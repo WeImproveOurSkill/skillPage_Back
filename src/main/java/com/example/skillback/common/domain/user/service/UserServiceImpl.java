@@ -1,13 +1,16 @@
 package com.example.skillback.common.domain.user.service;
 
+import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
+import com.example.skillback.common.domain.user.dto.changePasswordRequest;
 import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.domain.user.repository.UserRepository;
 import com.example.skillback.common.enums.ActiveEnum;
 import com.example.skillback.common.enums.RollEnum;
 import com.example.skillback.common.jwt.JwtUtil;
 import com.example.skillback.common.security.redis.refresh.service.RedisService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -58,31 +61,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
         String userIdentifier = loginRequest.getUserIdentifier();
-        String password = passwordEncoder.encode(loginRequest.getPassword());
+        String password = loginRequest.getPassword();
         User user = findByUserIdentifier(userIdentifier);
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
         }
         String accessToken = getAccessToken(user);
-        String refreshToken = getToken(user);
+        String refreshToken = getRefreshToken(user);
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
         response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
         redisService.setValues(refreshToken, user.getUserIdentifier());
     }
 
-    private String getToken(User user) {
-        return jwtUtil.crateRefreshToken(user.getUserIdentifier(), user.getRollEnum());
-    }
-
-    private String getAccessToken(User user) {
-        return jwtUtil.createAccessToken(user.getUserIdentifier(),
-            user.getRollEnum());
-    }
-
 
 
     @Override
+    @Transactional
     public void deleteUser(User user, String password) {
         User user1 = findByUserIdentifier(user.getUserIdentifier());
         if (user.getPassword().equals(password)) {
@@ -98,10 +93,47 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUserIdentifier(userIdentifier);
     }
 
+    @Override
+    public void logout(HttpServletRequest request) {
+        String refreshToken = jwtUtil.resolveRefreshToken(request);
+        redisService.deleteValues(refreshToken);
+    }
+
+    @Override
+    @Transactional
+    public String findId(FindIdRequest findId) {
+        User user = userRepository.findByPhoneNumberAndUserName(findId.getPhoneNumber(),
+            findId.getUsername()).orElseThrow(() -> new IllegalArgumentException("잘못된 접근입니다"));
+
+        return user.getUserIdentifier();
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(User user, changePasswordRequest changePassword) {
+        String userIdentifier = user.getUserIdentifier();
+        String password = user.getPassword();
+        User user1= findByUserIdentifier(userIdentifier);
+        if (!passwordEncoder.matches(changePassword.getPassword(), user1.getPassword())) {
+            throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
+        }
+        user1.changePassword(changePassword.getNewPassword());
+    }
+
+
     private User findByUserIdentifier(String userIdentifier) {
         return userRepository.findByUserIdentifier(userIdentifier)
             .orElseThrow(() -> new UsernameNotFoundException("해당 사용자르 찾을 수 없습니다."));
     }
 
 
+
+    private String getRefreshToken(User user) {
+        return jwtUtil.crateRefreshToken(user.getUserIdentifier(), user.getRollEnum());
+    }
+
+    private String getAccessToken(User user) {
+        return jwtUtil.createAccessToken(user.getUserIdentifier(),
+            user.getRollEnum());
+    }
 }
