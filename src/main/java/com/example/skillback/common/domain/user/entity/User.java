@@ -3,7 +3,7 @@ package com.example.skillback.common.domain.user.entity;
 import com.example.skillback.common.domain.answer.entity.Answer;
 import com.example.skillback.common.domain.board.entity.Board;
 import com.example.skillback.common.domain.comment.entity.Comment;
-import com.example.skillback.common.domain.file.entity.FileForm;
+import com.example.skillback.common.domain.s3.entity.FileForm;
 import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.domain.question.entity.Question;
 import com.example.skillback.common.domain.review.entity.Review;

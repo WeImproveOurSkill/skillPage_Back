@@ -10,7 +10,7 @@ spring:
     open-in-view: false
   data:
     redis:
-      host: localhost
+      host: 127.0.0.1
       port: 6379
 jwt:
   secret:
@@ -24,12 +24,15 @@ jasypt:
       bean: jasyptStringEncryptor
       password: ENC(ykR6sevQXU/gYFcNEx/Vqw==)
 
-naver-cloud-sms:
-    accessKey : ENC(TAB/kxScJwa0mF/LbXIZ2ak9iAaSbMJOjUJKnQNrWkY=)
-    secretKey : ENC(geSn12XqZFmmSxYr0FlgxISkHz+ZX+E20D5SB55PCR0oawTthPZYroMQGm3fJgqaQdi3nuV6jQw=)
+naver-cloud:
+  accessKey : ENC(TAB/kxScJwa0mF/LbXIZ2ak9iAaSbMJOjUJKnQNrWkY=)
+  secretKey : ENC(geSn12XqZFmmSxYr0FlgxISkHz+ZX+E20D5SB55PCR0oawTthPZYroMQGm3fJgqaQdi3nuV6jQw=)
+  sms:
     serviceId : ENC(EVyAot+A6ow1ZtJG/dXT/rMxE6i8bJhiBKn6Vllt5ov928/a/zqmbrpIgmIPbTJp)
     senderPhone : "01000000000"
-
+  s3:
+    end-point: "https://kr.object.ncloudstorage.com"
+    region-name: "kr-standard"
 java-mail:
   hostname: ENC(EPeQgROSy1+/Ev6pMXGeYea5cwMwRQlX)
   identifier: ENC(Hfd5ajAKGVf9PldJtig0JQ==)
