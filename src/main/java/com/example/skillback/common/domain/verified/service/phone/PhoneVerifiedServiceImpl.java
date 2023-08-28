@@ -46,16 +46,16 @@ public class PhoneVerifiedServiceImpl implements PhoneVerifiedService {
     private final RedisService redisService;
 
 
-    @Value("${naver-cloud-sms.accessKey}")
+    @Value("${naver-cloud.accessKey}")
     private String accessKey;
 
-    @Value("${naver-cloud-sms.secretKey}")
+    @Value("${naver-cloud.secretKey}")
     private String secretKey;
 
-    @Value("${naver-cloud-sms.serviceId}")
+    @Value("${naver-cloud.sms.serviceId}")
     private String serviceId;
 
-    @Value("${naver-cloud-sms.senderPhone}")
+    @Value("${naver-cloud.sms.senderPhone}")
     private String phone;
 
 

@@ -1,7 +1,7 @@
 package com.example.skillback.common.domain.review.entity;
 
 import com.example.skillback.common.TimeStamped;
-import com.example.skillback.common.domain.file.entity.FilePic;
+import com.example.skillback.common.domain.s3.entity.FilePic;
 import com.example.skillback.common.domain.product.entity.Product;
 import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.user.entity.User;

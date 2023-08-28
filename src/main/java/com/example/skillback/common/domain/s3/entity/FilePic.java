@@ -1,4 +1,4 @@
-package com.example.skillback.common.domain.file.entity;
+package com.example.skillback.common.domain.s3.entity;
 
 import com.example.skillback.common.domain.review.entity.Review;
 import jakarta.persistence.Column;
@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
