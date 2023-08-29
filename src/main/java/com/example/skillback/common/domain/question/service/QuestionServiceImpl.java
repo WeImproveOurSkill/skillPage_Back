@@ -11,6 +11,7 @@ import com.example.skillback.common.domain.question.repository.QuestionRepositor
 import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.dtos.PageDto;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public QuestionResponse getQuestion(Long questionId) {
-        Question question = getQuestionById(questionId);
-        return new QuestionResponse(question);
+        QuestionResponse questionResponse = getQuestionResponse(questionId);
+        return questionResponse;
     }
 
     @Override
@@ -76,9 +77,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<QuestionResponsePage> getQuestionPage(PageDto pageDto) {
-        Page<QuestionResponsePage> questionResponsePages = questionRepository.findAll(pageDto.toPageable())
-            .map(question -> new QuestionResponsePage(question));
-        return questionResponsePages;
+
+        return questionRepository.findAllAndMakePage(pageDto.toPageable());
     }
 
     private Product getProductByProductId(Long productId) {
@@ -87,5 +87,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     private Question getQuestionById(Long questionId) {
         return questionRepository.findById(questionId).orElseThrow(() -> new IllegalArgumentException("해당 질문은 존재하지않습니다."));
+    }
+
+    private QuestionResponse getQuestionResponse(Long questionId) {
+        return questionRepository.findByQuestionId(questionId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 질문은 존재하지않습니다"));
     }
 }
