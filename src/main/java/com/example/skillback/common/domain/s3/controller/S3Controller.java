@@ -34,10 +34,10 @@ public class S3Controller {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<StatusResponse> uploadPic(@RequestParam("bucketName") String bucketName,
+    public ResponseEntity<String> uploadPic(@RequestParam("bucketName") String bucketName,
         @RequestParam("pic") MultipartFile multipartFile) throws IOException {
-        s3Service.uploadPic(multipartFile, bucketName);
-        return RESPONSE_OK;
+        String url = s3Service.uploadPic(multipartFile, bucketName);
+        return ResponseEntity.ok().body(url);
     }
 
 }
