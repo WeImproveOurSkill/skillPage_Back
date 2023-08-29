@@ -36,7 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public Page<ReviewListResponse> getReviewList(Long productId, PageDto pageDto) {
         Product product = getProductByProductId(productId);
-        Page<ReviewListResponse> allByProduct = reviewRepository.findAllByProduct(product,pageDto.toPageable()).map(review -> new ReviewListResponse(review));
+        Page<ReviewListResponse> allByProduct = reviewRepository.findAllByProduct(
+            pageDto.toPageable(), product);
         return allByProduct;
     }
 

@@ -8,6 +8,8 @@ import com.example.skillback.common.domain.review.dto.ReviewListResponse;
 import com.example.skillback.common.domain.review.dto.ReviewResponse;
 import com.example.skillback.common.domain.review.dto.UpdateReviewRequest;
 import com.example.skillback.common.domain.review.entity.Review;
+import com.example.skillback.common.domain.s3.entity.FilePic;
+import com.sun.mail.imap.IMAPFolder.FetchProfileItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,19 +23,20 @@ public class ReviewFixture {
 
     public static final ReviewListResponse REVIEW_LIST_RESPONSE = ReviewListResponse.builder()
         .reviewContent("ReviewContent")
-        .reviewWriter("reviewUser")
+        .user("reviewUser")
         .likeCnt(1L)
         .hateCnt(1L)
         .reviewScore(1)
         .build();
 
+//    private static Object List;
     public static final ReviewResponse REVIEW_RESPONSE = ReviewResponse.builder()
         .reviewContent("ReviewContent")
-        .reviewWriter("reviewUser")
+        .user("reviewUser")
         .likeCnt(1L)
         .hateCnt(1L)
         .reviewScore(1)
-        .reviewPic("pic")
+        .reviewPic(null)
         .build();
 
     public static final UpdateReviewRequest UPDATE_REVIEW_REQUEST = UpdateReviewRequest.builder()
