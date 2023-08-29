@@ -35,15 +35,13 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final RedisService redisService;
-//    @Bean
-//    public SecurityFilterChain exceptionResources(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeHttpRequests(resources ->
-//                resources.requestMatchers("/templates/**").permitAll()
-//                    .anyRequest().authenticated());
-//
-//        return http.build();
-//    }
+
+    private final String[] permitAllArray = {
+        "/member1/join",
+        "/member1/login",
+        "/member1/find-id",
+        "/member1/change-password"
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,7 +56,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/**").permitAll()
+                auth.requestMatchers(permitAllArray).permitAll()
                     .anyRequest().authenticated())
             .addFilterBefore(new JwtAuthFilter(userDetailsService, jwtUtil,redisService),
                 UsernamePasswordAuthenticationFilter.class);

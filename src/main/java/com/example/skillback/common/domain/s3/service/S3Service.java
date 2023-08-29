@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface S3Service {
 
-    void uploadPic(MultipartFile multipartFile, String bucketName) throws IOException;
+    String uploadPic(MultipartFile multipartFile, String bucketName) throws IOException;
 
     void createBucket(String bucketName);
 

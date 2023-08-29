@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -43,29 +44,33 @@ public class S3ServiceImpl implements S3Service {
 
 
     @Override
-    public void uploadPic(MultipartFile multipartFile, String bucketName) throws IOException {
+    public String uploadPic(MultipartFile multipartFile, String bucketName) throws IOException {
 
         File uploadFile = convert(multipartFile).orElseThrow(
             () -> new IllegalArgumentException("파일 변환에 실패했습니다")
         );
         // create folder
-        createFolder(bucketName);
+//        createFolder(bucketName);
 
        // upload local file
-        uploadFile(bucketName, uploadFile);
+        String url = uploadFile(bucketName, uploadFile);
+        return url;
     }
 
-    private void uploadFile(String bucketName, File uploadFile) {
+    private String uploadFile(String bucketName, File uploadFile) {
         String objectName = uploadFile.getName();
         try {
             s3.putObject(bucketName, objectName, uploadFile);
             log.info("Object %s has been created.\n", objectName);
             removeOriginFile(uploadFile);
+            String url = String.valueOf(s3.getUrl(bucketName, objectName));
+            return url;
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
         } catch (SdkClientException e) {
             e.printStackTrace();
         }
+        throw new IllegalArgumentException("파일이 존재하지않습니다");
     }
 
     private void createFolder(String bucketName) {

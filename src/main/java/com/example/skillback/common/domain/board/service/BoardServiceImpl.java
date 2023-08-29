@@ -38,20 +38,14 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
 
     public Page<BoardListResponse> getBoardList(PageDto pageDto) {
-        Page<BoardListResponse> boardList = boardRepository.findAll(pageDto.toPageable()).map(board -> new BoardListResponse(board));
+        Page<BoardListResponse> boardList = boardRepository.findAllBoardPage(pageDto.toPageable());
         return boardList;
     }
 
     @Override
     @Transactional
     public BoardResponse getBoard(Long boardId) {
-        Board board = getBoardById(boardId);
-        return BoardResponse.builder()
-            .userName(board.getUser().getUserIdentifier())
-            .title(board.getTitle())
-            .content(board.getContent())
-            .comments(board.getCommentList().stream().map(CommentResponse::new).collect(Collectors.toList()))
-            .build();
+        return getBoardResponse(boardId);
     }
 
     @Override
@@ -81,6 +75,11 @@ public class BoardServiceImpl implements BoardService {
 
     private Board getBoardById(Long boardId) {
         return boardRepository.findById(boardId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 게시글은 존재하지않습니다"));
+    }
+
+    private BoardResponse getBoardResponse(Long boardId) {
+        return boardRepository.findByBoardId(boardId)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글은 존재하지않습니다"));
     }
 }

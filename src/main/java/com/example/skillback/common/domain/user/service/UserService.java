@@ -3,7 +3,7 @@ package com.example.skillback.common.domain.user.service;
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
-import com.example.skillback.common.domain.user.dto.changePasswordRequest;
+import com.example.skillback.common.domain.user.dto.ChangePasswordRequest;
 import com.example.skillback.common.domain.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,5 +22,5 @@ public interface UserService {
 
     String findId(FindIdRequest findId);
 
-    void changePassword(User user, changePasswordRequest changePassword);
+    void changePassword(User user, ChangePasswordRequest changePassword);
 }

@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Page<ProductListResponse> getProductList(PageDto pageDto) {
-        Page<ProductListResponse> productPage = productRepository.findAll(pageDto.toPageable()).map(product -> new ProductListResponse(product));
+        Page<ProductListResponse> productPage = productRepository.findAllandPage(pageDto.toPageable());
         return productPage;
 
     }

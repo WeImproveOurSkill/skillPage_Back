@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewListResponse {
 
-    private String reviewWriter;
+    private String user;
     private int reviewScore;
     private String reviewContent;
     private Long likeCnt;
     private Long hateCnt;
 
     public ReviewListResponse(Review review){
-        this.reviewWriter = review.getUser().getUserIdentifier();
+        this.user = review.getUser().getUserIdentifier();
         this.reviewScore = review.getReviewScore();
         this.reviewContent = review.getReviewContent();
         this.likeCnt = review.getLikeCnt();

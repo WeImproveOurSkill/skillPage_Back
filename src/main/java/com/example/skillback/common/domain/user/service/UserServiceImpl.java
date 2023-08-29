@@ -3,7 +3,7 @@ package com.example.skillback.common.domain.user.service;
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
-import com.example.skillback.common.domain.user.dto.changePasswordRequest;
+import com.example.skillback.common.domain.user.dto.ChangePasswordRequest;
 import com.example.skillback.common.domain.user.entity.User;
 import com.example.skillback.common.domain.user.repository.UserRepository;
 import com.example.skillback.common.enums.ActiveEnum;
@@ -13,6 +13,7 @@ import com.example.skillback.common.security.redis.refresh.service.RedisService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,9 +67,10 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호의 입력이 정확하지않습니다");
         }
+
         String accessToken = getAccessToken(user);
         String refreshToken = getRefreshToken(user);
-
+        user.recentLogin(LocalDateTime.now());
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
         response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
         redisService.setValues(refreshToken, user.getUserIdentifier());
@@ -82,7 +84,6 @@ public class UserServiceImpl implements UserService {
         User user1 = findByUserIdentifier(user.getUserIdentifier());
         if (user.getPassword().equals(password)) {
             userRepository.delete(user1);
-            return;
         } else {
             throw new IllegalArgumentException("해당 사용자는 접근권한이 없습니다");
         }
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changePassword(User user, changePasswordRequest changePassword) {
+    public void changePassword(User user, ChangePasswordRequest changePassword) {
         String userIdentifier = user.getUserIdentifier();
         String password = user.getPassword();
         User user1= findByUserIdentifier(userIdentifier);

@@ -6,7 +6,7 @@ import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_DEL
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
 import com.example.skillback.common.domain.user.dto.FindIdRequest;
-import com.example.skillback.common.domain.user.dto.changePasswordRequest;
+import com.example.skillback.common.domain.user.dto.ChangePasswordRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.service.UserService;
@@ -69,8 +69,8 @@ public class UserController {
         return ResponseEntity.ok().body(identifier);
     }
 
-    @GetMapping("/find-password")
-    public ResponseEntity<StatusResponse> changePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody changePasswordRequest changePassword) {
+    @GetMapping("/change-password")
+    public ResponseEntity<StatusResponse> changePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody ChangePasswordRequest changePassword) {
         userService.changePassword(userDetails.getUser(), changePassword);
         return RESPONSE_OK;
     }
