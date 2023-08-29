@@ -32,6 +32,8 @@ public class QuestionRepositoryQueryImpl implements QuestionRepositoryQuery{
                     question.questionContent,
                     question.user.userName))
             .from(question)
+            .limit(pageable.getPageSize())
+            .offset(pageable.getOffset())
             .fetch();
 
         Long totalSize = getTotalSize().fetch().get(0);

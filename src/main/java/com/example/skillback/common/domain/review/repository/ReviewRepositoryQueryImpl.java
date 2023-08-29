@@ -32,6 +32,8 @@ public class ReviewRepositoryQueryImpl implements ReviewRepositoryQuery{
                     review.hateCnt
                 )).from(review)
             .where(review.product.eq(product))
+            .limit(pageable.getPageSize())
+            .offset(pageable.getOffset())
             .fetch();
         Long totalCnt = getTotalSize().fetch().get(0);
 
