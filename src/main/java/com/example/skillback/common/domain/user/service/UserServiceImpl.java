@@ -36,7 +36,9 @@ public class UserServiceImpl implements UserService {
         User user = makeUser(userSignupRequest);
         userRepository.save(user);
         String accessToken = getAccessToken(user);
+        String refreshToken = getRefreshToken(user);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
     }
 
     private User makeUser(UserSignupRequest userSignupRequest) {

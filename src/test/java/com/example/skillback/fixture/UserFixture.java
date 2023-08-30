@@ -1,5 +1,7 @@
 package com.example.skillback.fixture;
 
+import com.example.skillback.common.domain.user.dto.ChangePasswordRequest;
+import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.entity.User;
@@ -32,4 +34,13 @@ public class UserFixture {
         .password("password1!")
         .build();
 
+    public static final FindIdRequest FIND_ID_REQUEST = FindIdRequest.builder()
+        .username("username1")
+        .phoneNumber("010-0000-0000")
+        .build();
+
+    public static final ChangePasswordRequest CHANGE_PASSWORD_REQUEST = ChangePasswordRequest.builder()
+        .password("password")
+        .newPassword("newPassword")
+        .build();
 }

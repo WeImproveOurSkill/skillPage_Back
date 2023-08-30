@@ -5,8 +5,8 @@ import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_CRE
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_DELETED;
 import static com.example.skillback.common.utils.HttpResponseEntity.RESPONSE_OK;
 
-import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.ChangePasswordRequest;
+import com.example.skillback.common.domain.user.dto.FindIdRequest;
 import com.example.skillback.common.domain.user.dto.LoginRequest;
 import com.example.skillback.common.domain.user.dto.UserSignupRequest;
 import com.example.skillback.common.domain.user.service.UserService;

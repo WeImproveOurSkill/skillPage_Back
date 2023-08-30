@@ -103,4 +103,9 @@ public class User {
     public void recentLogin(LocalDateTime localDateTime) {
         this.recentLogin = localDateTime;
     }
+
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
 }
+

@@ -108,4 +108,24 @@ class ReviewServiceImplTest {
         //when
         //then
     }
+
+    @Test
+    void createReview() {
+    }
+
+    @Test
+    void testGetReviewList() {
+    }
+
+    @Test
+    void testGetReview() {
+    }
+
+    @Test
+    void testUpdateReview() {
+    }
+
+    @Test
+    void testDeleteReview() {
+    }
 }
