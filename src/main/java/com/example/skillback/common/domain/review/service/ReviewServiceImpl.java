@@ -59,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public void deleteReview(Long reviewId, User user) {
         Review review = getReviewById(reviewId);
-        if (review.getUser().equals(user)) {
+        if (review.checkUser(user)) {
             reviewRepository.delete(review);
         }else {
             throw new IllegalArgumentException("해당 유저는 접근권한이 없습니다");

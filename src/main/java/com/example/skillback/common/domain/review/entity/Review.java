@@ -68,6 +68,10 @@ public class Review extends TimeStamped {
         this.reviewContent = updateReviewRequest.getReviewContent();
     }
 
+    public boolean checkUser(User user) {
+        return this.user.equals(user);
+    }
+
 //    public void updateReviewScore(UpdateReviewRequest updateReviewRequest) {
 //        if(updateReviewRequest.get)
 //    }
